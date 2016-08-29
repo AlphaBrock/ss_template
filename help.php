@@ -42,7 +42,7 @@
   <header id="header" class="navbar navbar-fixed-top bg-white box-shadow b-b b-light affix-top" data-spy="affix" data-offset-top="1">
     <div class="container">
       <div class="navbar-header">        
-        <a href="https://www.alphabrock.xyz/" class="navbar-brand"><img src="./theme/freedom/images/logo.png" class="m-r-sm" data-evernote-hover-show="true"><span class="text-muted">Freedom</span></a>
+        <a href="########/" class="navbar-brand"><img src="./theme/freedom/images/logo.png" class="m-r-sm" data-evernote-hover-show="true"><span class="text-muted">Freedom</span></a>
         <button class="btn btn-link visible-xs" type="button" data-toggle="collapse" data-target=".navbar-collapse">
           <i class="fa fa-bars"></i>
         </button>
@@ -133,9 +133,9 @@
 		<div class="col-sm-4 animated fadeInRightBig">
 	<section class="panel b-light text-center m-t">
 	<header class="panel-heading bg-primary">
-        <a href="help/ios9"><i> <img src="./theme/freedom/images/jiaocheng/3.png" data-evernote-hover-show="true"></i>
+        <a href="help/ios9.php"><i> <img src="./theme/freedom/images/jiaocheng/3.png" data-evernote-hover-show="true"></i>
         
-         </a></header><a href="help/ios9">  
+         </a></header><a href="help/ios9.php">  
        <li class="list-group-item">
             iOS9配置影梭教程
        </li>
@@ -300,7 +300,7 @@
 				<div class="col-sm-4" data-ride="animated" data-animation="fadeInLeft" data-delay="300">
 					<i class="fa fa-bullhorn fa-3x icon-muted"></i>
 					<h5 class="text-uc m-b m-t-lg">免责声明</h5>
-					<p class="text-sm">使用 <a href="https://www.alphabrock.xyz/" title="Freedom">[Freedom]</a> 请遵守当地法律 <br>
+					<p class="text-sm">使用 <a href="########/" title="Freedom">[Freedom]</a> 请遵守当地法律 <br>
 						Freedom不承担因使用本站服务所发生的任何责任.
              	</p>
 				</div>
@@ -312,7 +312,7 @@
 				<div class="col-sm-4" data-ride="animated" data-animation="fadeInRight" data-delay="900">
 					<i class="fa fa-desktop fa-3x icon-muted"></i>
 					<h5 class="text-uc m-b m-t-lg">远程支持</h5>
-					<p class="text-sm"></p><div class="follow-us">在线客服QQ： 528327016 <br>邮箱：528327016#qq.com(联系时请将#改为@)<p></p>
+					<p class="text-sm"></p><div class="follow-us">在线客服QQ： ******** <br>邮箱：********#qq.com(联系时请将#改为@)<p></p>
 				</div>
 			</div>
 			<br>
