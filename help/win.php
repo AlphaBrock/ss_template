@@ -172,7 +172,7 @@
 				<div class="col-sm-4" data-ride="animated" data-animation="fadeInRight" data-delay="900">
 					<i class="fa fa-desktop fa-3x icon-muted"></i>
 					<h5 class="text-uc m-b m-t-lg">远程支持</h5>
-					<p class="text-sm"></p><div class="follow-us">在线客服QQ： 528327016 <br>邮箱：528327016#qq.com(联系时请将#改为@)<p></p>
+					<p class="text-sm"></p><div class="follow-us">在线客服QQ： ******** <br>邮箱：********#qq.com(联系时请将#改为@)<p></p>
 				</div>
 			</div>
 			<br>
