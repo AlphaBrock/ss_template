@@ -1,11 +1,13 @@
+<?php
+require_once '../lib/config.php';
+?>
 <!DOCTYPE html>
-<html class="bg-dark" lang="en">
+<html>
 <head>
-  <meta charset="utf-8">
-  <title>注册/登录-Freedom</title>
-  <meta name="description" content="app, web app, responsive, admin dashboard, admin, flat, flat ui, ui kit, off screen nav">
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"> 
-  <link rel="stylesheet" href="../theme/freedom/css/bootstrap.css" type="text/css">
+    <meta charset="UTF-8">
+    <title><?php echo $site_name;  ?></title>
+    <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
+ <link rel="stylesheet" href="../theme/freedom/css/bootstrap.css" type="text/css">
   <link rel="stylesheet" href="../theme/freedom/css/animate.css" type="text/css">
   <link rel="stylesheet" href="../theme/freedom/css/font-awesome.min.css" type="text/css">
   <link rel="stylesheet" href="../theme/freedom/css/font.css" type="text/css">
@@ -44,28 +46,19 @@
             <input id="repasswd" placeholder="确认密码" class="form-control input-lg" type="password">
           </div>
           <div class="form-group">
-            <label class="control-label">Choose Your Contact Style</label>
-              <select class="form-control" id="imtype">
-                <option></option>
-                <option value="1">微信</option>
-                <option value="2">QQ</option>
-                <option value="3">Google+</option>
-              </select>
+            <label class="control-label">Confirm Password</label>
+            <input type="text" id="code" class="form-control" placeholder="邀请码"/>
           </div>
-          <div class="form-group">
-            <label class="control-label">Contact Account</label>
-            <input id="wechat" placeholder="联系方式账号" class="form-control input-lg" type="text">          
-          </div>
-                                <div class="form-group">
-              <div id="embed-captcha"></div>
-            </div>
+
           	  
           <div class="checkbox">
             <label>
               <p>注册即代表同意<a href="../tos.php">服务条款</a>，以及保证所录入信息的真实性，如有不实信息会导致账号被删除。</p>
             </label>
           </div>
-          <button id="reg" type="submit" class="btn btn-primary">确认注册</button>		  
+            <div class="form-group has-feedback">
+                <button type="submit" id="reg" class="btn btn-primary btn-block btn-flat">同意服务条款并提交注册</button>
+            </div>	  
           <div class="line line-dashed"></div>
 		  
 		  <div id="msg-success" class="alert alert-info alert-dismissable" style="display: none;">
@@ -83,7 +76,7 @@
 		
 		
           <p class="text-muted text-center"><small>已经注册过了?</small></p>
-          <a href="../user.1.php" class="btn btn-default btn-block">返回登录</a>
+          <a href="login.php" class="btn btn-default btn-block">返回登录</a>
         </div>
       </section>
     
@@ -100,97 +93,85 @@
     </div>
   </footer>		
  
-
 <!-- jQuery 2.1.3 -->
-<script src="../assets/public/js/jquery.min.js"></script>
+<script src="../asset/js/jQuery.min.js"></script>
 <!-- Bootstrap 3.3.2 JS -->
-<script src="../assets/public/js/bootstrap.min.js" type="text/javascript"></script>
+<script src="../asset/js/bootstrap.min.js" type="text/javascript"></script>
 <!-- iCheck -->
-<script src="../assets/public/js/icheck.min.js" type="text/javascript"></script>
+<script src="../asset/js/icheck.min.js" type="text/javascript"></script>
+<script>
+    $(function () {
+        $('input').iCheck({
+            checkboxClass: 'icheckbox_square-blue',
+            radioClass: 'iradio_square-blue',
+            increaseArea: '20%' // optional
+        });
+        // $("#msg-error").hide(100);
+        // $("#msg-success").hide(100);
+
+    });
+</script>
 <script>
     $(document).ready(function(){
-
+         function register(){
+            $.ajax({
+                type:"POST",
+                url:"_reg.php",
+                dataType:"json",
+                data:{
+                    email: $("#email").val(),
+                    name: $("#name").val(),
+                    passwd: $("#passwd").val(),
+                    repasswd: $("#repasswd").val(),
+                    code: $("#code").val(),
+                    agree: $("#agree").val()
+                },
+                success:function(data){
+                    if(data.ok){
+                        $("#msg-error").hide(10);
+                        $("#msg-success").show(100);
+                        $("#msg-success-p").html(data.msg);
+                        window.setTimeout("location.href='login.php'", 2000);
+                    }else{
+                        $("#msg-error").hide(10);
+                        $("#msg-error").show(100);
+                        $("#msg-error-p").html(data.msg);
+                    }
+                },
+                error:function(jqXHR){
+                    $("#msg-error").hide(10);
+                    $("#msg-error").show(100);
+                    $("#msg-error-p").html("发生错误："+jqXHR.status);
+                    // 在控制台输出错误信息
+                    console.log(removeHTMLTag(jqXHR.responseText));
+                }
+            });
+        }
+        $("html").keydown(function(event){
+            if(event.keyCode==13){
+                register();
+            }
+        });
+        $("#reg").click(function(){
+            register();
+        });
         $("#ok-close").click(function(){
             $("#msg-success").hide(100);
         });
         $("#error-close").click(function(){
             $("#msg-error").hide(100);
         });
-        $("#mail-ok-close").click(function(){
-            $("#mail-msg-success").hide(100);
-        });
-        $("#mail-error-close").click(function(){
-            $("#mail-msg-error").hide(100);
-        });
     })
 </script>
-
-
-<script>
-var handlerFloat = function (captchaObj) {
-    $("#reg").click(function () {
-    	  $("#reg").text("正在注册...");
-        document.getElementById("reg").disabled = true;
-        var validate = captchaObj.getValidate();
-        if (!validate) {
-        		$("#reg").text("确认注册");
-        		document.getElementById("reg").disabled = false;
-            $("#msg-success").hide(10);
-            $("#msg-error").show(100);
-            $("#msg-error-p").html('请先完成上述图片验证');
-            return;
-        }
-        $.ajax({
-            url: "/auth/register.php", // 进行二次验证
-            type: "post",
-            dataType: "json",
-                data:{
-                    name: $("#name").val(),
-                    email: $("#email").val(),
-                    passwd: $("#passwd").val(),
-                    repasswd: $("#repasswd").val(),					
-                    wechat: $("#wechat").val(),
-                    imtype: $("#imtype").val(),
-
-                                    },
-                success:function(data){
-                    if(data.ret == 1){
-                    		$("#reg").text("注册成功");
-                    		document.getElementById("reg").disabled = true;
-                        $("#msg-error").hide(10);
-                        $("#msg-success").show(100);
-                        $("#msg-success-p").html(data.msg);
-                        window.setTimeout("location.href='/auth/login'", 1800);
-                    }else{
-                    		$("#reg").text("确认注册");
-                    		document.getElementById("reg").disabled = false;
-                        $("#msg-success").hide(10);
-                        $("#msg-error").show(100);
-                        $("#msg-error-p").html(data.msg);
-                    }
-                },
-                error:function(jqXHR){
-                    $("#reg").text("确认注册");
-                    document.getElementById("reg").disabled = false;
-                    $("#msg-error").hide(10);
-                    $("#msg-error").show(100);
-                    $("#msg-error-p").html("发生错误："+jqXHR.status);
-                }
-        });
-    });
-    // 弹出式需要绑定触发验证码弹出按钮
-    captchaObj.bindOn("#reg");
-    // 将验证码加到id为captcha的元素里
-    captchaObj.appendTo("#embed-captcha");
-    // 更多接口参考：http://www.geetest.com/install/sections/idx-client-sdk.html
-};
-
-
-
+<script type="text/javascript">
+            // 过滤HTML标签以及&nbsp 来自：http://www.cnblogs.com/liszt/archive/2011/08/16/2140007.html
+            function removeHTMLTag(str) {
+                    str = str.replace(/<\/?[^>]*>/g,''); //去除HTML tag
+                    str = str.replace(/[ | ]*\n/g,'\n'); //去除行尾空白
+                    str = str.replace(/\n[\s| | ]*\r/g,'\n'); //去除多余空行
+                    str = str.replace(/&nbsp;/ig,'');//去掉&nbsp;
+                    return str;
+            }
 </script>
-
-
-
-
 </body>
 </html>
