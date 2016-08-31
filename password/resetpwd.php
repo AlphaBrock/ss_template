@@ -1,20 +1,26 @@
+<?php
+require_once '../lib/config.php';
+$code = $_GET['code'];
+$uid  = $_GET['uid'];
+?>
 <!DOCTYPE html>
-<html class="bg-dark" lang="en">
+<html>
 <head>
-  <meta charset="utf-8">
-  <title>密码重置-Freedom</title>
-  <meta name="description" content="app, web app, responsive, admin dashboard, admin, flat, flat ui, ui kit, off screen nav">
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"> 
+    <meta charset="UTF-8">
+    <title><?php echo $site_name;  ?></title>
+    <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
   <link rel="stylesheet" href="../theme/freedom/css/bootstrap.css" type="text/css">
   <link rel="stylesheet" href="../theme/freedom/css/animate.css" type="text/css">
   <link rel="stylesheet" href="../theme/freedom/css/font-awesome.min.css" type="text/css">
   <link rel="stylesheet" href="../theme/freedom/css/font.css" type="text/css">
     <link rel="stylesheet" href="../theme/freedom/css/app.css" type="text/css">
-  <!--[if lt IE 9]>
-    <script src="js/ie/html5shiv.js"></script>
-    <script src="js/ie/respond.min.js"></script>
-    <script src="js/ie/excanvas.js"></script>
-  <![endif]-->
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="//oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
 </head>
 <body>
   <section id="content" class="m-t-lg wrapper-md animated fadeInUp">    
@@ -51,7 +57,7 @@
             <p id="msg-error-p"></p>
         </div>
 
-   	     <a href="../auth/login.php" class="btn btn-default btn-block">返回登陆</a>
+   	     <a href="../user/login.php" class="btn btn-default btn-block">返回登陆</a>
 
 		</div>
 		
@@ -66,17 +72,14 @@
         <small>使用本站服务请遵守当地法律<br>© <a href="../index.php">Freedom</a></small>
       </p>
     </div>
-  </footer>		
- 
-
+  </footer>	
 
 <!-- jQuery 2.1.3 -->
-<script src="../assets/public/js/jquery.min.js"></script>
+<script src="../asset/js/jQuery.min.js"></script>
 <!-- Bootstrap 3.3.2 JS -->
-<script src="../assets/public/js/bootstrap.min.js" type="text/javascript"></script>
+<script src="../asset/js/bootstrap.min.js" type="text/javascript"></script>
 <!-- iCheck -->
-<script src="../assets/public/js/icheck.min.js" type="text/javascript"></script>
-
+<script src="../asset/js/icheck.min.js" type="text/javascript"></script>
 <script>
     $(function () {
         $('input').iCheck({
@@ -85,26 +88,23 @@
             increaseArea: '20%' // optional
         });
     });
-     //$("#msg-error").hide(100);
-     //$("#msg-success").hide(100);
+    // $("#msg-error").hide();
+    // $("#msg-success").hide();
 </script>
 
 <script>
     $(document).ready(function(){
-        function reset(){
-            $.ajax({
-                type:"POST",
-                url:"/password/reset",
+          function reset(){
+               $.ajax({
+                type:"GET",
+                url:"_resetpwd.php?username="+$("#username").val()+"&email="+$("#email").val(),
                 dataType:"json",
-                data:{
-                    email: $("#email").val(),
-                },
                 success:function(data){
-                    if(data.ret == 1){
+                    if(data.ok){
                         $("#msg-error").hide(100);
                         $("#msg-success").show(100);
                         $("#msg-success-p").html(data.msg);
-                       // window.setTimeout("location.href='/auth/login'", 2000);
+                        window.setTimeout("location.href='index.php'", 2000);
                     }else{
                         $("#msg-error").hide(10);
                         $("#msg-error").show(100);
@@ -115,12 +115,14 @@
                     $("#msg-error").hide(10);
                     $("#msg-error").show(100);
                     $("#msg-error-p").html("发生错误："+jqXHR.status);
+                    // 在控制台输出错误信息
+                    console.log(removeHTMLTag(jqXHR.responseText));
                 }
             });
-        }
+          }
         $("html").keydown(function(event){
             if(event.keyCode==13){
-                login();
+                reset();
             }
         });
         $("#reset").click(function(){
@@ -134,6 +136,15 @@
         });
     })
 </script>
-
+<script type="text/javascript">
+            // 过滤HTML标签以及&nbsp 来自：http://www.cnblogs.com/liszt/archive/2011/08/16/2140007.html
+            function removeHTMLTag(str) {
+                    str = str.replace(/<\/?[^>]*>/g,''); //去除HTML tag
+                    str = str.replace(/[ | ]*\n/g,'\n'); //去除行尾空白
+                    str = str.replace(/\n[\s| | ]*\r/g,'\n'); //去除多余空行
+                    str = str.replace(/&nbsp;/ig,'');//去掉&nbsp;
+                    return str;
+            }
+</script>
 </body>
 </html>
